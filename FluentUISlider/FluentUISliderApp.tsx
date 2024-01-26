@@ -29,21 +29,21 @@ export interface IFluentSliderProps {
  }
 
 
-const FluentUISliderApp = (props:IFluentSliderProps): JSX.Element => {
+const FluentUISliderApp = (props: IFluentSliderProps): JSX.Element => {
 
-    const styles = useStyles();
-    const tooltipposition = props.vertical ? 'after' : 'above'
-    const activetheme = getTheme(props.theme)
+  const styles = useStyles();
+  const tooltipposition = props.vertical ? 'after' : 'above'
+  const activetheme = getTheme(props.theme)
 
-    const id = useId()
-    const [thumbRef, setThumbRef] = useState<HTMLDivElement | null>(null);
-    
-    const [sliderValue, setSliderValue] = useState(props.input)
-    
-    const onSliderChange: SliderProps['onChange'] = (_, data) => {
-        setSliderValue(data.value)
-        props.onSliderChange(data.value)
-    }
+  const id = useId()
+  const [thumbRef, setThumbRef] = useState<HTMLDivElement | null>(null);
+
+  const [sliderValue, setSliderValue] = useState(props.input)
+
+  const onSliderChange: SliderProps['onChange'] = (_, data) => {
+    setSliderValue(data.value)
+    props.onSliderChange(data.value)
+  }
 
     const stackClasses = mergeClasses(styles.stack, props.vertical ? styles.stackVertical : styles.stackHorizontal)
     const sliderStackItemClasses = mergeClasses(styles.stackitem, props.vertical ? styles.stackitemSliderVertical : undefined)
@@ -99,33 +99,33 @@ const FluentUISliderApp = (props:IFluentSliderProps): JSX.Element => {
                   </div>
                 }
 
-              
-                
-                <Slider
-                  id={id}
-                  className={sliderStackItemClasses}
-                  aria-valuetext={`Value is ${sliderValue}`}
-                  value={sliderValue}
-                  min={props.min}
-                  max={props.max}
-                  onChange={onSliderChange}
-                  
-                  size={props.size} 
-                  step={props.step}
-                  vertical={props.vertical}
-                  disabled={props.disabled}
-                  
-                  thumb={{ ref: setThumbRef }}
-                />
-                
-                
-                
-                {props.showminmax && 
-                  <div className={badgeStackItemClasses}>
-                    <Badge shape='rounded' appearance='tint'>
-                      {props.prefix}{props.vertical ? props.min : props.max}{props.suffix}
-                    </Badge>
-                  </div>}
+
+
+          <Slider
+            id={id}
+            className={sliderStackItemClasses}
+            aria-valuetext={`Value is ${sliderValue}`}
+            value={sliderValue}
+            min={props.min}
+            max={props.max}
+            onChange={onSliderChange}
+
+            size={props.size}
+            step={props.step}
+            vertical={props.vertical}
+            disabled={props.disabled}
+
+            thumb={{ ref: setThumbRef }}
+          />
+
+
+
+          {props.showminmax &&
+            <div className={badgeStackItemClasses}>
+              <Badge shape='rounded' appearance='tint'>
+                {props.prefix}{props.vertical ? props.min : props.max}{props.suffix}
+              </Badge>
+            </div>}
 
                 {/* Display value horizontal mode */}
                 {props.showValue && props.vertical === false && 

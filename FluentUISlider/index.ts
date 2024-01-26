@@ -113,7 +113,7 @@ export class FluentUISlider implements ComponentFramework.StandardControl<IInput
      * @returns an object based on nomenclature defined in manifest, expecting object[s] for property marked as “bound” or “output”
      */
     public getOutputs(): IOutputs
-    {
+    { 
         return {
             input: this._inputvalue,
          };
