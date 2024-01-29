@@ -1,6 +1,6 @@
 import { Badge, Divider, FluentProvider, IdPrefixProvider, mergeClasses, Slider, SliderProps, Tooltip, useId } from '@fluentui/react-components'
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { getTheme } from './utils/theme';
 import { useStyles } from './styles/Styles';
 
@@ -32,17 +32,25 @@ export interface IFluentSliderProps {
 const FluentUISliderApp = (props: IFluentSliderProps): JSX.Element => {
 
   const styles = useStyles();
-  const tooltipposition = props.vertical ? 'after' : 'above'
-  const activetheme = getTheme(props.theme)
+  const tooltipposition = props.vertical ? 'after' : 'above';
+  const activetheme = getTheme(props.theme);
 
-  const id = useId()
+  const id = useId();
   const [thumbRef, setThumbRef] = useState<HTMLDivElement | null>(null);
 
-  const [sliderValue, setSliderValue] = useState(props.input)
+  const [sliderValue, setSliderValue] = useState(props.input);
+
+  const [tooltipVisible, setTooltiVisible] = useState(false);
+
+  const onVisibleChange = useCallback((_:React.PointerEvent<HTMLElement> | React.FocusEvent<HTMLElement, Element> | undefined, data: OnVisibleChangeData)=>{
+    if(props.showtooltip){
+      setTooltiVisible(data.visible);
+    }
+  }, [props.showtooltip]);
 
   const onSliderChange: SliderProps['onChange'] = (_, data) => {
-    setSliderValue(data.value)
-    props.onSliderChange(data.value)
+    setSliderValue(data.value);
+    props.onSliderChange(data.value);
   }
 
     const stackClasses = mergeClasses(styles.stack, props.vertical ? styles.stackVertical : styles.stackHorizontal)

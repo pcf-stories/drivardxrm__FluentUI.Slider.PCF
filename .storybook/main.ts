@@ -1,10 +1,7 @@
-import type { StorybookConfig } from "@storybook/html-webpack5";
-
-const config: StorybookConfig = {
-  stories: [
-    "../stories/**/*.mdx",
-    "../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-  ],
+const webpack = require("webpack");
+/** @type { import('@storybook/html-webpack5').StorybookConfig } */
+const config = {
+  stories: ["../stories/**/*.mdx", "../stories/**/*.stories.@(js|mjs|ts)"],
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
@@ -12,14 +9,22 @@ const config: StorybookConfig = {
   ],
   framework: {
     name: "@storybook/html-webpack5",
-    options: {
-      builder: {
-        useSWC: true,
-      },
-    },
+    options: {},
   },
-  docs: {
-    autodocs: "tag",
+  staticDirs: ["./public"],
+  webpackFinal: async (config) => {
+    config.devtool = false;
+    config.plugins.push(
+      new webpack.SourceMapDevToolPlugin({
+        append: "\n//# sourceMappingURL=[url]",
+        fileContext: "./",
+        filename: "[file].map",
+      })
+    );
+    return config;
+  },
+  features: {
+    storyStoreV7: true,
   },
 };
 export default config;

@@ -31,6 +31,7 @@ export default {
     input: {
       control: "number",
       name: 'Input',
+      description: "Input column of the slider (Whole.None, Currency, FP, Decimal)",
       table: {
         category: 'Parameters',
       },
@@ -38,12 +39,14 @@ export default {
     min: {
       control: "number",
       name: 'Min Value',
+      description: "Minimum Value of the slider",
       table: {
         category: 'Parameters',
       },
     },
     max: {
       control: "number",
+      description: "Maximum Value of the slider",
       name: 'Max value',
       table: {
         category: 'Parameters',
@@ -52,6 +55,7 @@ export default {
     step: {
       control: "number",
       name: 'Step',
+      description: "Incremental step of the slider",
       table: {
         category: 'Parameters',
       },
@@ -60,15 +64,19 @@ export default {
       control: "select",
       name: "Size",
       description:
-        "",
+        "Size of the slider. (small, medium)",
       options: ["small", "medium"],
       table: {
+        type: {
+          summary: `small | medium`,
+        },
         category: "Parameters",
       },
     },
     prefix: {
       control: "text",
       name: 'Prefix',
+      description: "(Optional) Display prefix. Ex $ => $0",
       table: {
         category: 'Parameters',
       },
@@ -77,9 +85,12 @@ export default {
       control: "select",
       name: "Vertical",
       description:
-        "",
+        "Vertical Direction",
       options: ["true", "false"],
       table: {
+        type: {
+          summary: `True | False`,
+        },
         category: "Parameters",
       },
     },
@@ -87,19 +98,24 @@ export default {
       control: "select",
       name: "Show Min-Max",
       description:
-        "",
+        "Show min and max values",
       options: ["true", "false"],
       table: {
+        type: {
+          summary: `True | False`,
+        },
         category: "Parameters",
       },
     },
     showValue: {
       control: "select",
       name: "Show Value",
-      description:
-        "",
+      description: "Show selected value",
       options: ["true", "false"],
       table: {
+        type: {
+          summary: `True | False`,
+        },
         category: "Parameters",
       },
     },
@@ -107,15 +123,19 @@ export default {
       control: "select",
       name: "Theme",
       description:
-        "",
+        "Theme",
       options: ["WebLight", "WebDark", "TeamsLight", "TeamsDark", "TeamsHighContrast"],
       table: {
+        type: {
+          summary: `WebLight | WebDark | TeamsLight | TeamsDark | TeamsHighContrast`,
+        },
         category: "Parameters",
       }
     },
     suffix: {
       control: "text",
       name: 'Sufix',
+      description: "(Optional) Display suffix. Ex $ => 0$",
       table: {
         category: 'Parameters',
       },
@@ -123,10 +143,12 @@ export default {
     showTooltip: {
       control: "select",
       name: "Show Tooltip",
-      description:
-        "",
+      description: "Show tooltip with selected value when hovering over the slider",
       options: ["true", "false"],
       table: {
+        type: {
+          summary: `True | False`,
+        },
         category: "Parameters",
       },
     },
@@ -191,6 +213,7 @@ export default {
 const renderGenerator = () => {
   let container: HTMLDivElement | null;
   let mockGenerator: ComponentFrameworkMockGenerator<IInputs, IOutputs>;
+  let debounce: NodeJS.Timeout | null ;
 
   return function () {
     const [args, updateArgs] = useArgs<StoryArgs>();
@@ -243,9 +266,13 @@ const renderGenerator = () => {
       });
 
       mockGenerator.onOutputChanged.callsFake(({ input }) => {
-        // updateArgs({
-        //   input
-        // });
+       if(debounce){
+        clearTimeout(debounce);
+       }
+       
+       debounce = setTimeout(()=> updateArgs({
+          input
+        }), 600);
       });
 
       mockGenerator.ExecuteInit();
@@ -280,4 +307,78 @@ const renderGenerator = () => {
 export const Horizontal = {
   render: renderGenerator(),
   parameters: { controls: { expanded: true } },
+} as StoryObj<StoryArgs>;
+
+export const Vertical = {
+  render: renderGenerator(),
+  args: {
+    vertical: "true",
+  },
+  parameters: { controls: { expanded: false } },
+} as StoryObj<StoryArgs>;
+export const WithStep = {
+  render: renderGenerator(),
+  args: {
+    step: 10
+  },
+  parameters: { controls: { expanded: false } },
+} as StoryObj<StoryArgs>;
+export const Small = {
+  render: renderGenerator(),
+  args: {
+    size: 'small'
+  },
+  parameters: { controls: { expanded: false } },
+} as StoryObj<StoryArgs>;
+export const Simple = {
+  render: renderGenerator(),
+  args: {
+    showMinMax: 'false',
+    showTooltip: "false",
+    showValue: 'false'
+  },
+  parameters: { controls: { expanded: false } },
+} as StoryObj<StoryArgs>;
+export const Disabled = {
+  render: renderGenerator(),
+  args: {
+    isDisabled: true
+  },
+  parameters: { controls: { expanded: false } },
+} as StoryObj<StoryArgs>;
+export const WebLight = {
+  render: renderGenerator(),
+  args: {
+    theme: "WebLight"
+  },
+  parameters: { controls: { expanded: false } },
+} as StoryObj<StoryArgs>;
+
+export const WebDark = {
+  render: renderGenerator(),
+  args: {
+    theme: "WebDark"
+  },
+  parameters: { controls: { expanded: false } },
+} as StoryObj<StoryArgs>;
+export const TeamsLight = {
+  render: renderGenerator(),
+  args: {
+    theme: "TeamsLight"
+  },
+  parameters: { controls: { expanded: false } },
+} as StoryObj<StoryArgs>;
+export const TeamsDark = {
+  render: renderGenerator(),
+  args: {
+    theme: "TeamsDark"
+  },
+  parameters: { controls: { expanded: false } },
+} as StoryObj<StoryArgs>;
+export const TeamsHighContrast = {
+  render: renderGenerator(),
+  args: {
+    theme: "TeamsHighContrast"
+  },
+  parameters: { controls: { expanded: false } },
 } as StoryObj<StoryArgs>;
