@@ -6,6 +6,7 @@ const config = {
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
+    "@storybook/addon-webpack5-compiler-babel"
   ],
   framework: {
     name: "@storybook/html-webpack5",
@@ -22,9 +23,6 @@ const config = {
       })
     );
     return config;
-  },
-  features: {
-    storyStoreV7: true,
   },
 };
 export default config;
